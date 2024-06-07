@@ -49,7 +49,7 @@ export class Game {
         }
     }
 
-    unlockchest(): void {
+    unlockChest(): void {
         this.tm.clear();
         if (Utils.parseCondition(this.cr.container.condition, this.player)) {
             if (!(this.player.location in this.player.containers)) {
@@ -256,7 +256,7 @@ export class Game {
                 const dr = this.cr.dirs[command[1]];
                 if (Utils.parseCondition(dr.condition, this.player)) {
                     this.say(dr.say);
-                    Utils.parsedo(dr.do, this.player);
+                    Utils.parseDo(dr.do, this.player);
                     this.player.location = dr.dest;
                 } else {
                     this.say(dr.say);
@@ -269,7 +269,7 @@ export class Game {
             scripts.inventory(this);
         } else if (command[0] === "unlock") {
             if (this.cr.container) {
-                this.unlockchest();
+                this.unlockChest();
             } else {
                 this.tm.typing("There is nothing to open here", this.player);
                 this.tm.wait();
