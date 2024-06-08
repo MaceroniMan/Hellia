@@ -29,6 +29,7 @@ export class Terminal {
 
   getChar(): TermKey {}
   input(): string {}
+  prompt(ptext: string): boolean {}
 
   typing(words: string, player: (SaveMngr.Player | null) = null, speed: number = .03, skip: boolean = true): void {}
 }

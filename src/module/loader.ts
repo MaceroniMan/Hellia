@@ -7,23 +7,23 @@ const base64_quests: string = ``;
 const base64_items: string = ``;
 
 function b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512) {
-    const byteCharacters = atob(b64Data);
-    const byteArrays: Uint8Array[] = [];
+  const byteCharacters = atob(b64Data);
+  const byteArrays: Uint8Array[] = [];
 
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
 
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
     }
 
-    const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType });
+  return blob;
 }
 
 /* WORLD EXAMPLE
@@ -88,9 +88,31 @@ function b64toBlob(b64Data: string, contentType: string = '', sliceSize: number 
   }
 */
 
+export class InventoryItem {
+  public id: string;
+  public current: number;
+  public max: number;
+
+  constructor(id: string, current: number, max: number) {
+      this.id = id;
+      this.current = current;
+      this.max = max;
+  }
+}
+
+export class ItemDataManager {
+  constructor() {
+
+  }
+
+  makeNew(itemId: string): InventoryItem {
+
+  }
+}
+
 interface RoomDescription {
-    long: string;
-    short: string;
+  long: string;
+  short: string;
 }
 
 interface RoomDirection {
@@ -101,66 +123,67 @@ interface RoomDirection {
 }
 
 interface RoomContainer {
-    condition: string;
-    desc: string;
-    say: ConditionalCheck[];
+  condition: string;
+  desc: string;
+  say: ConditionalCheck[];
 }
 
 interface RoomStore {
-    multiplier: number;
-    desc: string;
-    condition: string;
-    items: ConditionalCheck[]
+  multiplier: number;
+  desc: string;
+  condition: string;
+  items: ConditionalCheck[]
 }
 
 interface RoomWorld {
-    name: string;
-    desc: RoomDescription;
-    do: ConditionalCheck[];
-    introtext: ConditionalCheck[];
-    dirs: Map<string, RoomDirection>;
+  name: string;
+  desc: RoomDescription;
+  do: ConditionalCheck[];
+  introtext: ConditionalCheck[];
+  dirs: Map<string, RoomDirection>;
 
-    container: RoomContainer | null;
-    stable: string | null;
-    store: RoomStore | null;
+  container: RoomContainer | null;
+  stable: string | null;
+  store: RoomStore | null;
 }
 
 class WorldDataManager {
-    private rooms: Map<string, RoomWorld>;
+  private rooms: Map<string, RoomWorld>;
 
-    constructor() {
+  constructor() {
 
+  }
+
+  loadWorld(data: any, progress: (c: number, max: number) => void): void {
+    for (var roomId in Object.keys(data)) {
+      let room = data[roomId];
+
+      let currentName: string = room["name"];
+      let currentDesc: RoomDescription = { long: room["desc.long"], short: room["desc.short"] };
+
+      let currentDo: ConditionalCheck[] = [];
+      for (let conditionalList in room["do"]) {
+        currentDo.push({
+          condition: conditionalList[0],
+          content: conditionalList[1]
+        })
+      }
+
+      let currentIntrotext: ConditionalCheck[] = [];
+      for (let conditionalList in room["introtext"]) {
+        currentIntrotext.push({
+          condition: conditionalList[0],
+          content: conditionalList[1]
+        })
+      }
+
+      console.log(`${roomId}: ${(data as { [key: string]: string })[roomId]}`);
     }
-
-    loadWorld(data: any, progress: (c: number, max: number) => void): void {
-        for (var roomId in Object.keys(data)) {
-            let room = data[roomId];
-
-            let currentName: string = room["name"];
-            let currentDesc: RoomDescription = {long: room["desc.long"], short: room["desc.short"]};
-
-            let currentDo: ConditionalCheck[] = [];
-            for (let conditionalList in room["do"]) {
-                currentDo.push({
-                    condition: conditionalList[0],
-                    content: conditionalList[1]
-                })
-            }
-
-            let currentIntrotext: ConditionalCheck[] = [];
-            for (let conditionalList in room["introtext"]) {
-                currentIntrotext.push({
-                    condition: conditionalList[0],
-                    content: conditionalList[1]
-                })
-            }
-
-            console.log(`${roomId}: ${(data as {[key: string]: string})[roomId]}`);
-        }
-    }
+  }
 }
 
-const f = {"foo":{
+const f = {
+  "foo": {
     "container": {
       "condition": "true",
       "desc": "A barrel sits off to the side",
@@ -203,4 +226,5 @@ const f = {"foo":{
         "do": "set z1.docks.south 1"
       }
     }
-  }}
+  }
+}

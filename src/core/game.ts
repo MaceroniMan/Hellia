@@ -3,6 +3,7 @@ import * as CmdParser from 'core/cmdparser';
 import * as Utils from 'core/utils';
 import * as SaveMngr from 'module/savegame';
 import * as Term from 'module/terminal';
+import * as Loader from 'module/loader'
 import { EXIT_KEYS } from 'const';
 
 
@@ -10,7 +11,7 @@ interface GameConstructorParams {
     savemngr: SaveMngr.SaveGameManager;
     terminal: Term.Terminal;
     items: any;
-    npcs: any;
+    npcmngr: Loader.ItemDataManager;
     world: any;
     quests: any;
     containers: any;
@@ -21,18 +22,18 @@ export class Game {
     public player: SaveMngr.Player;
     public tm: Term.Terminal;
     public items: any;
-    public npcs: any;
+    public npcmngr: Loader.ItemDataManager;
     public world: any;
     public quests: any;
     public containers: any;
     public cr: any;
 
-    constructor({ savemngr, terminal, items, npcs, world, quests, containers }: GameConstructorParams) {
+    constructor({ savemngr, terminal, items, npcmngr, world, quests, containers }: GameConstructorParams) {
         this.savemngr = savemngr;
         this.player = this.savemngr.data();
         this.tm = terminal;
         this.items = items;
-        this.npcs = npcs;
+        this.npcmngr = npcmngr;
         this.world = world;
         this.quests = quests;
         this.containers = containers;

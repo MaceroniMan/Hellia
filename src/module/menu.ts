@@ -2,7 +2,7 @@ import * as Utils from 'core/utils';
 import * as Term from 'module/terminal';
 import { KEYMAP } from 'const';
 
-enum StatusValue {
+export enum StatusValue {
   Exit,
   Select,
   Enter
@@ -11,9 +11,8 @@ enum StatusValue {
 interface RunFunctionParams {
   keyInput: () => Term.TermKey,
   writeFunc: (content: string) => void,
-  onEnter: (value: string, niceValue: string) => void,
-  onExit?: (value: string, niceValue: string) => void,
-  onSelect?: (value: string, niceValue: string) => void
+  doExit?: boolean,
+  doSelect?: boolean
 }
 
 export class Menu {
@@ -25,6 +24,8 @@ export class Menu {
   private status: StatusValue | null;
   private value: string;
   private niceValue: string;
+
+  public finValue: [StatusValue, string, string];
 
   constructor(string: string, screen: Term.Terminal, layout: string[][], dslayout: string[][] | null = null) {
     this.menuString = string;
@@ -128,7 +129,7 @@ export class Menu {
     }
   }
 
-  run({keyInput, writeFunc, onEnter, onExit, onSelect}: RunFunctionParams): void {
+  run({ keyInput, writeFunc, doExit, doSelect }: RunFunctionParams): void {
     while (this.status === null) {
       let content = this.menuString;
 
@@ -149,22 +150,17 @@ export class Menu {
       let key = keyInput()
       this.registerKey(key.value);
 
-      if (this.status === StatusValue.Enter) {
-        onEnter(this.value, this.niceValue);
-      } else if (this.status === StatusValue.Exit) {
-        if (onExit === undefined) {
+      if (this.status === StatusValue.Exit) {
+        if (doExit === null || doExit === false) {
           this.status = null;
-        } else {
-          onExit(this.value, this.niceValue)
         }
       } else if (this.status === StatusValue.Select) {
-        if (onSelect === undefined) {
+        if (doSelect === null || doSelect === false) {
           this.status = null;
-        } else {
-          onSelect(this.value, this.niceValue)
         }
       }
-
     }
+
+    this.finValue = [this.status, this.value, this.niceValue]
   }
 }

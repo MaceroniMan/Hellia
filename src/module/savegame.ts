@@ -1,8 +1,4 @@
-export interface InventoryItem {
-    id: string;
-    current: number;
-    max: number
-}
+import { InventoryItem } from 'module/loader'
 
 export class Player {
     private savemanager: SaveGameManager;
