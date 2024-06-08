@@ -1,0 +1,60 @@
+[shady-trader.z1-campcenter]
+  * name: "Shady Trader"
+
+  * conditions: first {random(3) and not flag('z1.npc.shady-trader.first')}
+  * conditions: start {random(3) and flag('z1.npc.shady-trader.first')}
+
+  * observation: "A shady trader watches you from a distance" {true}
+
+  [first]
+    ? "Shady Trader", "Yea? Who are you and what do you want?"
+    ? "You", "My name is [@], who are you?"
+    ? "Shady Trader", "[@] huh? Interesting name.`All you need to know is that I am a trader of wares. Some legal... some not, all of which cost G{stars}."
+
+    > "Alright then" $.start {true}
+
+    * do: "set z1.npc.shady-trader.first 1"
+
+  [start]
+    ? "Shady Trader", "Care to bargin?"
+
+    > "I will take a foxnose" $.yesfoxnose {stars >= 10}
+    : "I will take a foxnose" {stars < 10}
+      ? "Trader Joe", "Yeaaaaa, sorry. G{Foxnose} is a crisp 10 stars. No stars, no G{foxnose}. Thats how it works around here kid."
+      * do: "exit"
+
+    > "Do you know about a store handle?" $.storehandle {quest('z1.campstore.unlock') == 0}
+    > "No thanks" mads.exit {true}
+
+    * do: ""
+
+  [yesfoxnose]
+    ? "Trader Joe", "Foxnose eh? That will be B{10 stars}"
+
+    > "Deal" $.pleasure {true}
+
+    * do: "stars -10 | give foxnose"
+
+  [pleasure]
+    ? "Trader Joe", "Pleasure doing business with you"
+
+    * do: "exit"
+
+  [storehandle]
+    ? "Trader Joe", "Excuse me?"
+    ? "You", "A handle. One made for a store cupboard?"
+    ? "Trader Joe",  "Hmph, fine.`A nice 15 stars would make sure I tell you the right information..."
+
+    : "Here is 15 stars" {stars >= 15}
+      ? "Trader Joe", "Hm, thank you. Here is your G{store handle}."
+      ? "You", "You stole this dident you? I should report you to the G{General} right now."
+      ? "Trader Joe", "I have no idea what you are talking about, but I will not take accusations. Please be on your way."
+
+      * do: "exit"
+
+    : "I do not have 15 stars" {stars < 15}
+      ? "Trader Joe", "Come back later, I do not work for free."
+
+      * do: "exit"
+
+    * do: ""

@@ -1,0 +1,75 @@
+[shop-owner.z1-campstore]
+  * name: "Shop Owner"
+
+  * conditions: start   {quest('z1.campstore.unlock') == -1}
+  * conditions: waiting {quest('z1.campstore.unlock') == 0}
+  * conditions: done    {quest('z1.campstore.unlock') == 1}
+
+  * observation: "The store owner sits in a chair behind the counter, looking rather board" {quest('z1.campstore.unlock') != 1}
+  * observation: "The store owner is standing behind the counter" {true}
+
+  [start]
+    ? "You", "Hello, what do you have for sale?"
+    ? "Shop Owner", "All kinds of stuff, or at least we used to."
+    ? "You", "Used to?"
+    ? "Shop Owner", "This morning when I opened, the handle to our inventory closet was gone, and I cannot unlock the closet without the handle."
+
+    : "Do you know what happened to it?"
+      ? "Shop Owner", "No, but I think someone stole it."
+      ? "You", "Stole... a handle?"
+      ? "Shop Owner", "Yes, the lock on the door was picked and the door was open this morning. Nothing else was stolen, just the handle."
+
+      > "Do you want help getting it back?" $.gethandleplea
+
+      * do: ""
+
+    > "Do you want help getting it back?" $.gethandleplea
+
+    * do: ""
+
+  [gethandleplea]
+    ? "Shop Owner", "You would do that?"
+    ? "Narrator", "She stands up looking excited"
+    ? "You", "Of course, just give me a bit to look around."
+    ? "Shop Owner", "Thank you so much"
+    ? "Narrator", "She sticks out her hand and gives you a handshake"
+    ? "Shop Owner", "I am Jodie by the way, it is good to meet you [@]"
+
+    > "You are very welcome Jodie" $.accepthandlequest
+    : "How do you know my name?"
+      ? "Jodie", "Word get around quick you know, you are the new recruit right?"
+      ? "You", "I am!"
+      ? "Jodie", "You know what would be a great first 'mission'?`Finding my handle, what do you say?"
+
+      > "I'm in!" $.accepthandlequest
+      > "I suppose." $.accepthandlequest
+
+      * do: ""
+
+    * do: ""
+
+  [accepthandlequest]
+    ? "Jodie", "That's great, thank you very much."
+    ? "You", "Do you have any idea who took it?"
+    ? "Jodie", "No, but it must have been someone B{shady}..."
+
+    > "I will look around" mads.exit
+
+    * do: ""
+
+  [waiting]
+    ? "Jodie", "Do you have my handle yet?"
+
+    : "Yes I do" {has('store-cabinet-handle')}
+      ? "Jodie", "Thank the elements, I can finally open my store again!"
+      ? "You", "You are welcome.`So what do you sell?"
+      ? "Jodie", "All kinds of stuff, here, take some stars then come around to the front of counter and talk to me again."
+
+      * do: "quest z1.campstore.unlock 1 | exit"
+
+    : "No, not yet" {not has('store-cabinet-handle')}
+      ? "Jodie", "Ok, I will keep holding down the fort here."
+
+      * do: exit
+
+    * do: ""

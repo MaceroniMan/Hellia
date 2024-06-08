@@ -1,0 +1,67 @@
+{
+  "dagger" : {
+    "name" : "Dagger",
+    "desc" : "a short, sharp dagger with a leather grip and a stone as the hilt",
+    "value" : 20,
+    "craft" : {
+      "recipies" : [{
+        "items" : ["stick", "blade"],
+        "locations" : []
+      }]
+    }
+  },
+  "stick" : {
+    "name" : "Stick",
+    "desc" : "a very simple wooden stick, still has some leaves attached",
+    "value" : 5,
+    "craft" : null
+  },
+  "sand-dollar" : {
+    "name" : "Sand Dollar",
+    "desc" : "a perfect sand dollar, in near perfect condition",
+    "value" : 100,
+    "craft" : null
+  },
+  "foxnose" : {
+    "name" : "Foxnose",
+    "desc" : "a short shrub, has orange and yellow flowers",
+    "value" : 10,
+    "craft" : null
+  },
+  "goat-meat" : {
+    "name" : "Goat Meat",
+    "desc" : "a slab of cured meat, smells of salt",
+    "value" : 20,
+    "craft" : null
+  },
+  "standard-key-12" : {
+    "name" : "Standard Key #12",
+    "desc" : "a old key, inscribed with the number 12",
+    "value" : 10,
+    "craft" : null
+  },
+  "store-cabinet-handle" : {
+    "name" : "Store Cabinet Handle",
+    "desc" : "a old-style cabinet handle for the G{Camp Store}",
+    "value" : 10,
+    "craft" : null
+  },
+  "healing-brew" : {
+    "name" : "Healing Brew",
+    "desc" : "a healing brew made of fish and meat",
+    "value" : 30,
+    "craft" : null
+  },
+  "sweet-apple" : {
+    "name" : "Sweet Apple",
+    "desc" : "a apple with a sweet gooey coating",
+    "value" : 10,
+    "craft" : null
+  },
+  "raw-potato" : {
+    "name" : "Raw Potato",
+    "desc" : "a regular, slightly hard raw potato",
+    "value" : 10,
+    "craft" : null
+  }
+}

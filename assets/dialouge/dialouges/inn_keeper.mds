@@ -1,0 +1,101 @@
+[inn-keeper.z1-campinn]
+  * name: "Inn Keeper"
+
+  * conditions: start   { quest('') == -1 }
+  * conditions: waiting { quest('z1.innkeeper.stew') in [0, 1] }
+  * conditions: done    { quest('z1.innkeeper.stew') == 2 }
+  
+  * observation: "The inn keeper is stirring a massive pot of soup in the corner" { true }
+  
+  [start]
+    ? "Innkeeper", "Well hello there young one! What brings you to the inn?"
+    ? "You", "Not much, just looking around. Who are you?"
+    ? "Innkeeper", "Oh ho ho, right to the point eh? I am Frank, leader of this fine Inn."
+    
+    : "What are you doing?" [start.whatdoing]
+      ? "Frank", "I am trying to make some soup for my husband, but it just does not taste right."
+      ? "You", "Do you need any help?"
+      ? "Frank", "Hmm, do you think you could get me some ingredients?"
+      ? "You", "Yes! I think I could, what ingredients do you want?"
+      ? "Frank", "If you could grab me a B{Foxnose} plant that would be terrific. There is sometimes a G{Shady Trader} that comes to visit the Y{Town Square} that carries them. You will need some stars to get some from him, but I would think B{15 stars} should be enough."
+      
+      > "I will be back as soon as I can" mads.exit
+      > "Give me a few hours" mads.exit
+
+      * do: "stars 15 | quest z1.innkeeper.stew 0"
+
+    : "What am I doing here?"
+      ? "Frank", "What are you doing here? Quite a question indeed, but one I have no answer too.`I apologize young one, but you will have to seek knowlage somewhere else."
+      
+      : "Thank you"
+        ? "Frank", "You are quite welcome, now, what else can I help you with?"
+        
+        > "What are you doing?" $.start.whatdoing
+
+        * do: ""
+
+      * do: ""
+
+    * do: ""
+
+  [notdone]
+    ? "Frank", "Take your time, again I really appreciate this."
+
+    * do: exit
+
+  [done]
+    ? "Frank", "Thank you very much for helping me out with that soup, it means quite a lot to me."
+
+    > "No problem " mads.exit
+    > "Do you know anything about a store handle? " $.storehandle { quest('z1.campstore.unlock') == 0 }
+
+    * do: ""
+
+  [waiting]
+    ? "Frank", "Did you find my ingredients yet?"
+
+    > "Here is your B{Foxnose} " $.has-foxnose { quest('z1.innkeeper.stew') == 0 and has('foxnose') }
+    > "Here is your B{Goat Meat} " $.has-goatmeat { quest('z1.innkeeper.stew') == 1 and has('goat-meat') }
+    > "Not yet" $.notdone { quest('z1.innkeeper.stew') in [1, 0] and not has('foxnose') or not has('goat-meat') }
+    > "Do you know anything about a store handle?" $.storehandle { quest('z1.campstore.unlock') == 0 }
+
+    * do: ""
+  
+  [has-foxnose]
+    ? "Frank", "Thank you so much young one!`I must say you are a rather helpful helper. Would you do one more favor for me?"
+    ? "You", "Sure, what do you need?"
+    ? "Frank", "My stew is a bit bland right now, do you think you could find some G{Goat Meat} to help spice it up? It used to be sold in the Y{Camp Store}, but I am afraid they do not sell it anymore. Hmm, I did hear B{Jodie} mention something about a Y{Shead} by the Y{Camp Store}, maybe you could check there?"
+    
+    : "Break in? Isnt that illegal?"
+      ? "Frank", "No, yes, kind of. If someone catches you, just send them to me."
+      ? "Narrator", "Frank flexes and his 6 foot 5 frame almost doubles in size"
+      
+      * do: "quest z1.innkeeper.stew 1"
+      
+      > "You", "Oh, alright. Um, yea, I will um, get on that. Yea, ok" mads.exit
+
+    * do: ""
+
+  [has-goatmeat]
+    ? "Frank", "You found some! Thank you very much, this is the perfect thing for my soup!"
+    ? "You", "Glad I could help"
+    ? "Frank", "Now if you wait just a moment...`A little longer...`...`...`YES!`My stew is finaly done, time to tell Fred.`FRE-ED!"
+    ? "Fred", "Huh? Did you call me Frank?"
+    ? "Frank", "Yes! This young travler helped me make my famous stew!"
+    ? "Fred", "Mmm, that is good stew, thank you...`I'm sorry, but what was your name?"
+    ? "You", "My name is [@], I'm the new recruit here."
+    ? "Fred", "I see! Well, thank you for helping my husband with his stew.`Between you and me, he is not the best cook."
+    ? "Frank", "Ahem, Fred?"
+    ? "Fred", "Kidding, kidding.`I almost forgot, here is a few B{stars}, hopefully these will help on your training."
+
+    * do: "quest z1.innkeeper.stew 2 | stars 20"
+
+    > "Thank you" mads.exit
+
+  [storehandle]
+    ? "Frank", "A... what?"
+    ? "You", "A handle. One made for a store cupboard?"
+    ? "Frank", "I am sorry, but I do not know know.`That sounds like something someone Y{shady} would take though."
+    ? "You", "Thank you for your time."
+
+    * do: exit

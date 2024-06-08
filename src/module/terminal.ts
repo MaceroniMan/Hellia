@@ -21,6 +21,7 @@ export class TermKey {
 export class Terminal {
   onWhite = "";
   normal = "";
+  green = "";
 
   wait(): void {}
   clear(): void {}

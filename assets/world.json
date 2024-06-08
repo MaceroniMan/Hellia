@@ -1,0 +1,626 @@
+{
+  "z1-docks": {
+    "name": "Dockyard",
+    "desc.long": "You are in a small dockyard with only two ships docked along the pier, there is also faint smell of salty sea air mixed with seaweed that drifts off the ocean",
+    "desc.short": "A small dockyard",
+    "do": [
+      [
+        "true",
+        "set z1.start 1"
+      ]
+    ],
+    "introtext": [
+      [
+        "not flag('z1.start')",
+        "Welcome to Hurricane! Please sit back and enjoy the adventure."
+      ]
+    ],
+    "dirs": {
+      "south": {
+        "dest": "z1-boardwalk",
+        "say": [
+          [
+            "not flag('z1.docks.south') and has('dagger')",
+            "[@] used Dagger to cut through vines"
+          ],
+          [
+            "not flag('z1.docks.south') and not has('dagger')",
+            "There are some spiky vines blocking your way"
+          ]
+        ],
+        "condition": "has('dagger') or flag('z1.docks.south')",
+        "do": "set z1.docks.south 1"
+      }
+    }
+  },
+  "z1-boardwalk": {
+    "name": "Boardwalk",
+    "desc.long": "A vary old wooden boardwalk with some chunks missing from it, there are large trees that look for the most part like mangrove trees, and there is the faint sound of seabirds",
+    "desc.short": "A old boardwalk",
+    "dirs": {
+      "north": {
+        "dest": "z1-docks",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-eastforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-westforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-campcenter": {
+    "name": "Camp Center",
+    "desc.long": "A makeshift military camp made up of large and small tents placed in a small caldera, with a cooking fire in the center, and the sounds of small conversations flow all around you",
+    "desc.short": "A makeshift camp",
+    "container": {
+      "condition": "true",
+      "desc": "A barrel sits off to the side",
+      "say": [
+        [
+          "true",
+          "You pry off the cap to look inside"
+        ]
+      ]
+    },
+    "dirs": {
+      "north": {
+        "dest": "z1-boardwalk",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-campstore",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-stable",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-campinn",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-stable": {
+    "name": "Horse Stable",
+    "desc.long": "What looks to be the only permanent structure, a small open building is set up with a few large white and black spotted stallions munching on some hay. The strong scent of horse manure and hay floats around",
+    "desc.short": "A small stable",
+    "stable": "A large central stable sits nearby",
+    "dirs": {
+      "west": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-commandtent",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-campstore": {
+    "name": "Camp Store",
+    "desc.long": "A tent that seems larger than the rest, with shelves filled with food items and weapons, a smell of a old bookstore mixed with canvas fills the air",
+    "desc.short": "A large tent",
+    "dirs": {
+      "north": {
+        "dest": "z1-boardwalk",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-campstorestorage",
+        "say": [
+          [
+            "has('standard-key-12')",
+            "[@] used the key to unlock the door"
+          ],
+          [
+            "true",
+            "The door appears locked, but the lock is inscribed with the number 12"
+          ]
+        ],
+        "condition": "has('standard-key-12')",
+        "do": ""
+      }
+    }
+  },
+  "z1-campstorestorage": {
+    "name": "Storage",
+    "desc.long": "A small building built of wood that stands right outside the G{Camp Store}, filled with barrels of mead, cheese, and bread. There is a strong smell of preservatives, dried meat and salt",
+    "desc.short": "A locked storage celler",
+    "dirs": {
+      "east": {
+        "dest": "z1-campstore",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    },
+    "container": {
+      "condition": "true",
+      "desc": "A old barrel sits in the corner of the room",
+      "say": [
+        [
+          "true",
+          "You open the barrel to a smell of fermented ale"
+        ]
+      ]
+    }
+  },
+  "z1-campinn": {
+    "name": "Camp Inn",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-innhallway",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-innhallway": {
+    "name": "Inn Hallway",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-campinn",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-innaroom",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-innaroom": {
+    "name": "Inna's Room",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-innhallway",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-marieroom",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-marieroom": {
+    "name": "Marie's Room",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-innaroom",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-commandtent": {
+    "name": "Command Tent",
+    "desc.long": "A medium-sized tent with a large wooden table in the center, the table has a very large map with strange figurines perched on. There are banners hanging on all of the tent with different sigals on them",
+    "desc.short": "A small tent",
+    "dirs": {
+      "north": {
+        "dest": "z1-stable",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-eastforest": {
+    "name": "Forest",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "west": {
+        "dest": "z1-boardwalk",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-beach",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-westforest": {
+    "name": "Forest",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-boardwalk",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "north": {
+        "dest": "z1-rainbluff",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-thechasam",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-rainbluff": {
+    "name": "Rain Bluff",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "south": {
+        "dest": "z1-westforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-thechasam": {
+    "name": "The Chasam",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-westforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-chasamforest",
+        "say": [
+          [
+            "flag('z1.chasamforest.bridge', '0')",
+            "No bridge exists here yet"
+          ],
+          [
+            "flag('z1.chasamforest.bridge', '1')",
+            "The bridge is only halfway built"
+          ]
+        ],
+        "condition": "flag('z1.chasamforest.bridge', '2')",
+        "do": ""
+      }
+    }
+  },
+  "z1-chasamforest": {
+    "name": "Forest",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-thechasam",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "north": {
+        "dest": "z1-boulderpass",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-darkforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-boulderpass": {
+    "name": "Bolder Pass",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "south": {
+        "dest": "z1-chasamforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-darkforest": {
+    "name": "Dark Forest",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-chasamforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-forestclearing",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-forestclearing": {
+    "name": "Forest Clearing",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-darkforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-foresthorde",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-foresthorde": {
+    "name": "Treasure Horde",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-forestclearing",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-beach": {
+    "name": "Beach",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "west": {
+        "dest": "z1-eastforest",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "north": {
+        "dest": "z1-seacave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-piratescove",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-cave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-seacave": {
+    "name": "Sea Cave",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "south": {
+        "dest": "z1-beach",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-piratescove": {
+    "name": "Pirates Cove",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "west": {
+        "dest": "z1-beach",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "north": {
+        "dest": "z1-piratehorde",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-piratehorde": {
+    "name": "Treasure Horde",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "south": {
+        "dest": "z1-piratescove",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-cave": {
+    "name": "Cave",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-beach",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-darkcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-darkcave": {
+    "name": "Dark Cave",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-cave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-glitteringcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-glitteringcave": {
+    "name": "Glittering Cave",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-darkcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-secretcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-scarlettcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-secretcave": {
+    "name": "Secret Tunnel",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "east": {
+        "dest": "z1-glitteringcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-storeceller",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-scarlettcave": {
+    "name": "Scarlett's Hiding Place",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "west": {
+        "dest": "z1-glitteringcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-storeceller": {
+    "name": "Store Celler",
+    "desc.long": "",
+    "desc.short": "",
+    "dirs": {
+      "north": {
+        "dest": "z1-campstore",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-secretcave",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  }
+}

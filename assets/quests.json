@@ -1,0 +1,25 @@
+{
+  "z1.main" : {
+    "done" : "You sucessfully found the 'G{Earth Stone}' and moved the bolders",
+    "name" : "Campaign",
+    "points" : [
+      "Head to the main town to receive orders from the B{General}",
+      ""
+    ]
+  },
+  "z1.innkeeper.stew" : {
+    "done" : "You sucessfully found all the ingredients and gave them to B{Frank} to make a soup",
+    "name" : "Studious Stew",
+    "points" : [
+      "Find a 'G{Foxnose}' plant, Frank said that a shifty travler sometimes carries them",
+      "Find a slab of 'G{Goat Meat}', there was a rumor that stated there might be some in the store celler"
+    ]
+  },
+  "z1.campstore.unlock" : {
+    "done" : "You sucessfully found the Store Handle and returned it to B{Jodie}",
+    "name" : "Missing Handle",
+    "points" : [
+      "Find the 'G{Store Handle}' and give it back to B{Jodie}"
+    ]
+  }
+}

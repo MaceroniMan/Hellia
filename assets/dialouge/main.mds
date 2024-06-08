@@ -1,0 +1,23 @@
+#import dialouges/dockyard_guard.mds
+#import dialouges/inn_keeper.mds
+#import dialouges/shady_trader.mds
+#import dialouges/shop_owner.mds
+
+// B{} is for Items and Stars
+// G{} is for People
+// Y{} is for Places
+
+[.info]
+  [compiler]
+    * output.interactions: dialouges
+    * output.options.ref: goto
+
+  [declare.interaction]
+    * field.require: "do"
+
+  [declare.scene]
+    * field.require: "conditions"
+    * field.require: "observation"
+    * field.require: "name"
+
+// run command: python3.10 mads.zip -i main.mds -o ../npcs.json

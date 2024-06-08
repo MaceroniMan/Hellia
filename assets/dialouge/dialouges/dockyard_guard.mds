@@ -1,0 +1,46 @@
+[dockyard-guard.z1-docks]
+  * name: "Dockyard Guard"
+
+  * conditions: start      { quest('z1.main') == -1 }
+  * conditions: secondtime { true }
+
+  * observation: "A Dockyard Guard watches you" { true }
+
+  [start]
+    ? "Dockyard Guard", "Hello [@], it says here on my sheet that you are the new recruit eh?`Well lets hope you fare better than the last one...`Anyway, here is your entry level gear, and the 'B{General}' wants to speak with you right away, he is in the camp directly 'Y{south}' of here."
+
+    > "Who are you?" $.whoareyou { true }
+    > "What happened to the last recruit?" $.lastrecruit { true }
+    > "Goodbye!" mads.exit { true }
+
+    * do: "give dagger | stars 10 | quest z1.main 0"
+
+  [secondtime]
+    ? "Dockyard Guard", "Yes? Do you need something?"
+
+    > "Who are you?" $.whoareyou { true }
+    > "What happened to the last recruit?" $.lastrecruit { true }
+    > "Do you know anything about a store handle?" $.storehandle { quest('z1.campstore.unlock') == 0 } 
+    > "Goodbye!" mads.exit { true }
+
+    * do: ""
+
+  [whoareyou]
+    ? "Dockyard Guard", "I am the Mighty Dockyard Guard! I watch over any and all trading!"
+
+    > "Nice!" $.secondtime
+
+    * do: ""
+
+  [lastrecruit]
+    ? "Dockyard Guard", "Ummm, well he uhhh, you know what? You should just ask the 'B{General}'..."
+
+    > "Ah ok." $.secondtime
+
+    * do: ""
+
+  [storehandle]
+    ? "Dockyard Guard", "Excuse me? Oh the one B{Jodie} is missing.`No I do not know who has it`But I keep a watchful eye over this dock, so if I find it I will inform B{Jodie} right away."
+    ? "You", "Alright, thank you."
+
+    * do: "exit"

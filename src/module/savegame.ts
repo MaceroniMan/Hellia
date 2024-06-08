@@ -1,3 +1,9 @@
+export interface InventoryItem {
+    id: string;
+    current: number;
+    max: number
+}
+
 export class Player {
     private savemanager: SaveGameManager;
 
@@ -6,11 +12,11 @@ export class Player {
     public moves: number; // the total count of the moves
     public location: string; // the current player location
     public flags: Map<string, number>; // game flags
-    public inventory: [string, number, number][]; // the inventory of all the items the player has on them
+    public inventory: InventoryItem[]; // the inventory of all the items the player has on them
     public quests: Map<string, number> // a list of all the quests and the progress on them ex. "z1-main": 0
     public stables: string[]; // a list of all the places you can 'teleport' to
-    public world: Map<string, string[]>; // a way to save what items have been dropped on the ground
-    public containers: Map<string, string[]>; // a way to save the state of the containers in the world
+    public world: Map<string, InventoryItem[]>; // a way to save what items have been dropped on the ground
+    public containers: Map<string, InventoryItem[]>; // a way to save the state of the containers in the world
     public recipes: string[]; // a list of all the current crafting recipies
 
     constructor(savemanager: SaveGameManager) {
@@ -23,8 +29,8 @@ export class Player {
         this.inventory = [];
         this.quests = new Map<string, number>();
         this.stables = [];
-        this.world = new Map<string, string[]>();
-        this.containers = new Map<string, string[]>();
+        this.world = new Map<string, InventoryItem[]>();
+        this.containers = new Map<string, InventoryItem[]>();
         this.recipes = [];
 
         this.savemanager = savemanager;

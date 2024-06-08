@@ -8,7 +8,7 @@ import { EXIT_KEYS } from 'const';
 
 interface GameConstructorParams {
     savemngr: SaveMngr.SaveGameManager;
-    screen: Term.Terminal;
+    terminal: Term.Terminal;
     items: any;
     npcs: any;
     world: any;
@@ -17,21 +17,20 @@ interface GameConstructorParams {
 }
 
 export class Game {
-    savemngr: SaveMngr.SaveGameManager;
-    player: SaveMngr.Player;
-    tm: Term.Terminal;
-    items: any;
-    npcs: any;
-    world: any;
-    quests: any;
-    containers: any;
-    cr: any;
-    c: any;
+    public savemngr: SaveMngr.SaveGameManager;
+    public player: SaveMngr.Player;
+    public tm: Term.Terminal;
+    public items: any;
+    public npcs: any;
+    public world: any;
+    public quests: any;
+    public containers: any;
+    public cr: any;
 
-    constructor({ savemngr, screen, items, npcs, world, quests, containers }: GameConstructorParams) {
+    constructor({ savemngr, terminal, items, npcs, world, quests, containers }: GameConstructorParams) {
         this.savemngr = savemngr;
         this.player = this.savemngr.data();
-        this.tm = screen;
+        this.tm = terminal;
         this.items = items;
         this.npcs = npcs;
         this.world = world;
@@ -64,7 +63,7 @@ export class Game {
         }
     }
 
-    dostables(): void {
+    doStables(): void {
         if (this.player.stables.length === 0) {
             console.log("There are no stables to travel to yet");
             this.tm.wait();
@@ -84,7 +83,7 @@ export class Game {
                 regList.push(stableLocation);
                 disList.push(this.world[stableLocation].name);
             } else {
-                menuString += `Travel to '${this.world[stableLocation].name}' ${this.c.green}(HERE)\n${this.c.reset}`;
+                menuString += `Travel to '${this.world[stableLocation].name}' ${this.tm.CGreen}(HERE)\n${this.tm.reset}`;
             }
         }
 
@@ -115,7 +114,7 @@ export class Game {
         }
     }
 
-    seequests(): void {
+    seeQuests(): void {
         let doneQuests = "";
         let notQuests = "";
 
@@ -287,9 +286,9 @@ export class Game {
                 scripts.dialogue(currentNPCs[command[1]], this);
             }
         } else if (command[0] === "quests") {
-            this.seequests();
+            this.seeQuests();
         } else if (command[0] === "stable") {
-            this.dostables();
+            this.doStables();
         } else if (command[0] === "store") {
             if (this.cr.store && Utils.parseCondition(this.cr.store.condition, this.player)) {
                 const storeDict = {

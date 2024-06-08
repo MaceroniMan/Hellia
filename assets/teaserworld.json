@@ -1,0 +1,213 @@
+{
+  "z1-docks": {
+    "name": "Dockyard",
+    "desc.long": "You are in a small dockyard with only two ships docked along the pier, there is also faint smell of salty sea air mixed with seaweed that drifts off the ocean",
+    "desc.short": "A small dockyard",
+    "do": [
+      [
+        "true",
+        "set z1.start 1"
+      ]
+    ],
+    "introtext": [
+      [
+        "not flag('z1.start')",
+        "Welcome to Hurricane! Please sit back and enjoy the adventure."
+      ]
+    ],
+    "dirs": {
+      "south": {
+        "dest": "z1-boardwalk",
+        "say": [
+          [
+            "not flag('z1.docks.south') and has('dagger')",
+            "[@] used Dagger to cut through vines"
+          ],
+          [
+            "not flag('z1.docks.south') and not has('dagger')",
+            "There are some spiky vines blocking your way"
+          ]
+        ],
+        "condition": "has('dagger') or flag('z1.docks.south')",
+        "do": "set z1.docks.south 1"
+      }
+    }
+  },
+  "z1-boardwalk": {
+    "name": "Boardwalk",
+    "desc.long": "A vary old wooden boardwalk with some chunks missing from it, there are large trees that look for the most part like mangrove trees, and there is the faint sound of seabirds",
+    "desc.short": "A old boardwalk",
+    "dirs": {
+      "north": {
+        "dest": "z1-docks",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-campcenter": {
+    "name": "Camp Center",
+    "desc.long": "A makeshift military camp made up of large and small tents placed in a small caldera, with a cooking fire in the center, and the sounds of small conversations flow all around you",
+    "desc.short": "A makeshift camp",
+    "container": {
+      "condition": "true",
+      "desc": "A barrel sits off to the side",
+      "say": [
+        [
+          "true",
+          "You pry off the cap to look inside"
+        ]
+      ]
+    },
+    "dirs": {
+      "north": {
+        "dest": "z1-boardwalk",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "south": {
+        "dest": "z1-campstore",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "east": {
+        "dest": "z1-stable",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-campinn",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-stable": {
+    "name": "Horse Stable",
+    "desc.long": "What looks to be the only permanent structure, a small open building is set up with a few large white and black spotted stallions munching on some hay. The strong scent of horse manure and hay floats around",
+    "desc.short": "A small stable",
+    "stable": "A large central stable sits nearby",
+    "dirs": {
+      "west": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  },
+  "z1-campstore": {
+    "name": "Camp Store",
+    "desc.long": "A large building with a boars head hanging over the door, with shelves filled with food items and weapons, a smell of a old bookstore mixed with canvas fills the air",
+    "desc.short": "A large building",
+    "dirs": {
+      "north": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-campstorestorage",
+        "say": [
+          [
+            "has('standard-key-12')",
+            "[@] used the key to unlock the door"
+          ],
+          [
+            "true",
+            "The door appears locked with a lock inscribed with the number 12"
+          ]
+        ],
+        "condition": "has('standard-key-12')",
+        "do": ""
+      }
+    },
+    "store": {
+      "multiplier": 1,
+      "desc": "A dusty store counter sits along the far wall",
+      "condition": "quest('z1.campstore.unlock') == 1",
+      "items": [
+        [
+          "true",
+          "sweet-apple"
+        ],
+        [
+          "true",
+          "raw-potato"
+        ]
+      ]
+    }
+  },
+  "z1-campstorestorage": {
+    "name": "Storage",
+    "desc.long": "A celler beneath the G{Camp Store}, filled with barrels of mead, cheese, and bread. The floor is dirt with a single solitary blue-candle lighting the room with a strong smell of dried meat and salt",
+    "desc.short": "A locked storage celler",
+    "dirs": {
+      "east": {
+        "dest": "z1-campstore",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    },
+    "container": {
+      "condition": "true",
+      "desc": "A old barrel sits in the corner of the room",
+      "say": [
+        [
+          "true",
+          "You open the barrel to a old hint of ale"
+        ]
+      ]
+    }
+  },
+  "z1-campinn": {
+    "name": "Camp Inn",
+    "desc.long": "The largest tent around, so big that it seems to have a hallway and rooms behind the counter. There is hustle and bustle all around as people move about their daily activities",
+    "desc.short": "A very large tent",
+    "dirs": {
+      "east": {
+        "dest": "z1-campcenter",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      },
+      "west": {
+        "dest": "z1-innhallway",
+        "say": [
+          [
+            "true",
+            "The door seems to be locked"
+          ]
+        ],
+        "condition": "false",
+        "do": ""
+      }
+    }
+  },
+  "z1-innhallway": {
+    "name": "Inn Hallway",
+    "desc.long": "",
+    "desc.short": "A small hallway",
+    "dirs": {
+      "east": {
+        "dest": "z1-campinn",
+        "say": [],
+        "condition": "true",
+        "do": ""
+      }
+    }
+  }
+}
