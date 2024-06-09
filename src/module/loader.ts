@@ -1,4 +1,4 @@
-import { ConditionalCheck } from 'interface';
+import { ConditionalCheck, npcId, roomId, questId, itemId, containerId } from 'interface';
 
 const base64_world: string = ``;
 const base64_npc: string = ``;
@@ -88,17 +88,37 @@ function b64toBlob(b64Data: string, contentType: string = '', sliceSize: number 
   }
 */
 
+/** Represents a dialouge option picker
+ * ```ts
+ * condition: string
+ * goto: string
+ * text: string
+ * ```
+*/
 interface NpcDialougeOption {
   condition: string,
   goto: string,
   text: string
 }
 
+/** Represents a single line of dialouge
+ * ```ts
+ * speaker: string
+ * text: string
+ * ```
+*/
 interface NpcDialougeLine {
   speaker: string,
   text: string
 }
 
+/** Represents a entire dialouge interaction
+ * ```ts
+ * do: string
+ * options: NpcDialougeOption[]
+ * dialouge: NpcDialougeLine[]
+ * ```
+*/
 interface NpcInteraction {
   do: string,
   options: NpcDialougeOption[],
@@ -106,7 +126,7 @@ interface NpcInteraction {
 }
 
 class NpcRoomData {
-  private interactions: Map<string, NpcInteraction>; 
+  private interactions: Map<string, NpcInteraction>;
 
   public name: string;
   public conditions: ConditionalCheck[];
@@ -118,9 +138,28 @@ class NpcRoomData {
 }
 
 export class NPCDataWarehouse {
-  
+  private npcs: Map<string, Map<string, NpcRoomData>>;
 
-  getNpc(npcId: string, roomId: string): NpcRoomData {
+  getNpc(npcId: string, roomId: string): NpcRoomData | null {
+    if (this.npcs.has(npcId)) {
+      if (this.npcs[npcId].has(roomId)) {
+        return this.npcs[npcId][roomId];
+      }
+    }
+    return null;
+  }
+
+  listNpc(roomId: string): string[] {
+    let validNpcs: string[] = [];
+    for (let npcId in Object.keys(this.npcs)) {
+      if (this.npcs[npcId].has(roomId)) {
+        validNpcs.push(npcId);
+      }
+    }
+    return validNpcs;
+  }
+
+  loadData(data: any, progress: (c: number, max: number) => void): void {
 
   }
 }
@@ -131,18 +170,32 @@ export class InventoryItem {
   public max: number;
 
   constructor(id: string, current: number, max: number) {
-      this.id = id;
-      this.current = current;
-      this.max = max;
+    this.id = id;
+    this.current = current;
+    this.max = max;
   }
 }
 
+interface ItemCraftData {
+  items: string[],
+  locations: string[]
+}
+
+interface ItemProperties {
+  name: string,
+  desc: string,
+  value : number,
+  recipes : ItemCraftData[] | null
+}
+
 export class ItemDataWarehouse {
-  constructor() {
+  private items 
+
+  makeNew(itemId: string): InventoryItem {
 
   }
 
-  makeNew(itemId: string): InventoryItem {
+  loadData(data: any, progress: (c: number, max: number) => void): void {
 
   }
 }
@@ -184,14 +237,14 @@ interface RoomWorld {
   store: RoomStore | null;
 }
 
-class WorldDataWarehouse {
+export class RoomDataWarehouse {
   private rooms: Map<string, RoomWorld>;
 
   constructor() {
 
   }
 
-  loadWorld(data: any, progress: (c: number, max: number) => void): void {
+  loadData(data: any, progress: (c: number, max: number) => void): void {
     for (var roomId in Object.keys(data)) {
       let room = data[roomId];
 
