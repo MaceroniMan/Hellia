@@ -49,4 +49,6 @@ export class SaveGameManager {
     }
 
     save(): void {}
+
+    load(): void {}
 }

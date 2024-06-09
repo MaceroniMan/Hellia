@@ -28,7 +28,7 @@ export class Terminal {
   hideCursor(): void {}
 
   getChar(): TermKey {}
-  input(): string {}
+  input(ptext?: string): string {}
   prompt(ptext: string): boolean {}
 
   typing(words: string, player: (SaveMngr.Player | null) = null, speed: number = .03, skip: boolean = true): void {}

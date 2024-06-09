@@ -12,7 +12,7 @@ function splitList(old: string[]): [string[], string[]] {
     return [newList, refList];
 }
 
-export function parse(command: string, player: any, npcs: string[]): [string, string | null] {
+export function parse(command: string, player: any, npcs: string[]): [string, string] {
     command = command.toLowerCase().replace("?", "");
     const actionList = command.split(" ");
 
@@ -44,29 +44,29 @@ export function parse(command: string, player: any, npcs: string[]): [string, st
                 refList = ["north", "east", "south", "west"];
 
             } else if (["inventory", "bag", "backpack"].includes(word)) {
-                return ["inventory", null];
+                return ["inventory", "null"];
 
             } else if (["unlock", "open", "look", "inspect"].includes(word)) {
-                return ["unlock", null];
+                return ["unlock", "null"];
 
-            } else if (word === "store") {
-                return ["store", null];
+            } else if (["store", "shop"].includes(word)) {
+                return ["store", "null"];
 
             } else if (["quest", "quests", "status"].includes(word)) {
-                return ["quests", null];
+                return ["quests", "null"];
 
             } else if (["travel", "stable", "stables"].includes(word)) {
-                return ["stable", null];
+                return ["stable", "null"];
 
             } else if (["exit", "quit", "leave"].includes(word)) {
-                return ["EXT", null];
+                return ["EXT", "null"];
             }
         }
     }
 
     if (verb === null) {
-        return ["NAC", null];
+        return ["NAC", "null"];
     } else {
-        return [verb, null];
+        return [verb, "null"];
     }
 }

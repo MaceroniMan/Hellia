@@ -88,6 +88,43 @@ function b64toBlob(b64Data: string, contentType: string = '', sliceSize: number 
   }
 */
 
+interface NpcDialougeOption {
+  condition: string,
+  goto: string,
+  text: string
+}
+
+interface NpcDialougeLine {
+  speaker: string,
+  text: string
+}
+
+interface NpcInteraction {
+  do: string,
+  options: NpcDialougeOption[],
+  dialouge: NpcDialougeLine[]
+}
+
+class NpcRoomData {
+  private interactions: Map<string, NpcInteraction>; 
+
+  public name: string;
+  public conditions: ConditionalCheck[];
+  public observation: ConditionalCheck[];
+
+  getInteraction(interactionId: string): NpcInteraction {
+    return this.interactions[interactionId];
+  }
+}
+
+export class NPCDataWarehouse {
+  
+
+  getNpc(npcId: string, roomId: string): NpcRoomData {
+
+  }
+}
+
 export class InventoryItem {
   public id: string;
   public current: number;
@@ -100,7 +137,7 @@ export class InventoryItem {
   }
 }
 
-export class ItemDataManager {
+export class ItemDataWarehouse {
   constructor() {
 
   }
@@ -147,7 +184,7 @@ interface RoomWorld {
   store: RoomStore | null;
 }
 
-class WorldDataManager {
+class WorldDataWarehouse {
   private rooms: Map<string, RoomWorld>;
 
   constructor() {

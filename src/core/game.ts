@@ -4,14 +4,12 @@ import * as Utils from 'core/utils';
 import * as SaveMngr from 'module/savegame';
 import * as Term from 'module/terminal';
 import * as Loader from 'module/loader'
-import { EXIT_KEYS } from 'const';
-
 
 interface GameConstructorParams {
     savemngr: SaveMngr.SaveGameManager;
     terminal: Term.Terminal;
     items: any;
-    npcmngr: Loader.ItemDataManager;
+    npcmngr: Loader.ItemDataWarehouse;
     world: any;
     quests: any;
     containers: any;
@@ -22,7 +20,7 @@ export class Game {
     public player: SaveMngr.Player;
     public tm: Term.Terminal;
     public items: any;
-    public npcmngr: Loader.ItemDataManager;
+    public npcmngr: Loader.ItemDataWarehouse;
     public world: any;
     public quests: any;
     public containers: any;
@@ -240,11 +238,11 @@ export class Game {
         }
 
         console.log("");
-        const userInput = prompt(": ");
-        const command = cmds.parse(userInput, this.player, currentNPCs);
+        const userInput = this.tm.input(": ");
+        const command = CmdParser.parse(userInput, this.player, currentNPCs);
 
         if (command[0] === "EXT") {
-            Utils.clear();
+            this.tm.clear();
             if (this.tm.prompt("Are you sure you want to exit?")) {
                 return;
             }
