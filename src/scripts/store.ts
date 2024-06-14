@@ -1,15 +1,19 @@
 import * as Menu from 'module/menu';
 import * as Utils from 'core/utils';
 import * as Game from 'core/game';
-import { EXIT_KEYS } from 'const';
-import { InventoryItem } from 'module/savegame';
+import { InventoryItem } from 'module/loader';
 
-interface ShopStorage {
-    priceMultiplier: number;
-    items: InventoryItem[];
+export class ShopStorage {
+    public priceMultiplier: number;
+    public items: InventoryItem[];
+
+    constructor(priceMultiplier: number, items: InventoryItem[]) {
+        this.priceMultiplier = priceMultiplier;
+        this.items = items;
+    }
 }
 
-function storeMenu(shopStorage: ShopStorage, game: Game.Game): void {
+export function storeMenu(shopStorage: ShopStorage, game: Game.Game): void {
     game.tm.clear();
 
     let done = false;

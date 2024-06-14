@@ -1,3 +1,5 @@
+import { InventoryItem } from 'module/loader';
+
 // The place for public interfaces or types
 
 /** Contains the check string and the content related
@@ -19,3 +21,7 @@ export type npcIntId = string;
 export type roomId = string;
 /** Item Identifier */
 export type itemId = string;
+/** Quest Identifier */
+export type questId = string;
+/** Flag Identifier */
+export type flagId = string;

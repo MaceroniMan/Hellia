@@ -1,4 +1,5 @@
 import { InventoryItem } from 'module/loader'
+import { roomId, flagId, questId } from 'interface'
 
 export class Player {
     private savemanager: SaveGameManager;
@@ -7,12 +8,12 @@ export class Player {
     public stars: number; // their version of money
     public moves: number; // the total count of the moves
     public location: string; // the current player location
-    public flags: Map<string, number>; // game flags
+    public flags: Map<flagId, number>; // game flags
     public inventory: InventoryItem[]; // the inventory of all the items the player has on them
-    public quests: Map<string, number> // a list of all the quests and the progress on them ex. "z1-main": 0
-    public stables: string[]; // a list of all the places you can 'teleport' to
-    public world: Map<string, InventoryItem[]>; // a way to save what items have been dropped on the ground
-    public containers: Map<string, InventoryItem[]>; // a way to save the state of the containers in the world
+    public quests: Map<questId, number> // a list of all the quests and the progress on them ex. "z1-main": 0
+    public stables: roomId[]; // a list of all the places you can 'teleport' to
+    public world: Map<roomId, InventoryItem[]>; // a way to save what items have been dropped on the ground
+    public containers: Map<roomId, InventoryItem[]>; // a way to save the state of the containers in the world
     public recipes: string[]; // a list of all the current crafting recipies
 
     constructor(savemanager: SaveGameManager) {
@@ -21,12 +22,12 @@ export class Player {
         this.stars = 0;
         this.moves = 0;
         this.location = "z1-docks";
-        this.flags = new Map<string, number>();
+        this.flags = new Map<flagId, number>();
         this.inventory = [];
-        this.quests = new Map<string, number>();
+        this.quests = new Map<questId, number>();
         this.stables = [];
-        this.world = new Map<string, InventoryItem[]>();
-        this.containers = new Map<string, InventoryItem[]>();
+        this.world = new Map<roomId, InventoryItem[]>();
+        this.containers = new Map<roomId, InventoryItem[]>();
         this.recipes = [];
 
         this.savemanager = savemanager;

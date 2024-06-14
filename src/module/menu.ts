@@ -25,6 +25,13 @@ export class Menu {
   private value: string;
   private niceValue: string;
 
+  /** The menu result
+   * ```yaml
+   * StatusValue: The status of the menu
+   * string: The value that the user selected (value)
+   * string: The values that was displayed (niceValue)
+   * ```
+  */
   public finValue: [StatusValue, string, string];
 
   constructor(string: string, screen: Term.Terminal, layout: string[][], dslayout: string[][] | null = null) {
@@ -129,6 +136,8 @@ export class Menu {
     }
   }
 
+  /** Run the menu loop
+  */
   run({ keyInput, writeFunc, doExit, doSelect }: RunFunctionParams): void {
     while (this.status === null) {
       let content = this.menuString;

@@ -4,6 +4,10 @@ import * as Utils from 'core/utils';
 import * as SaveMngr from 'module/savegame';
 import * as Term from 'module/terminal';
 import * as Loader from 'module/loader'
+import { ConditionalCheck } from 'interface';
+
+import * as StoreScript from 'scripts/store';
+import * as DialougeScript from 'scripts/dialouge';
 
 interface GameConstructorParams {
     savemngr: SaveMngr.SaveGameManager;
@@ -19,12 +23,12 @@ export class Game {
     public savemngr: SaveMngr.SaveGameManager;
     public player: SaveMngr.Player;
     public tm: Term.Terminal;
-    public items: any;
+    public items: Loader.ItemDataWarehouse;
     public npcmngr: Loader.ItemDataWarehouse;
-    public world: any;
+    public world: Loader.RoomDataWarehouse;
     public quests: any;
     public containers: any;
-    public cr: any;
+    public cr: Loader.RoomWorld;
 
     constructor({ savemngr, terminal, items, npcmngr, world, quests, containers }: GameConstructorParams) {
         this.savemngr = savemngr;
@@ -37,10 +41,10 @@ export class Game {
         this.containers = containers;
     }
 
-    say(sayList: [string, string][]): void {
+    say(sayList: ConditionalCheck[]): void {
         for (let i of sayList) {
-            if (Utils.parseCondition(i[0], this.player)) {
-                this.tm.typing(i[1], this.player);
+            if (Utils.parseCondition(i.condition, this.player)) {
+                this.tm.typing(i.content, this.player);
                 this.tm.wait();
                 return;
             }
@@ -49,16 +53,18 @@ export class Game {
 
     unlockChest(): void {
         this.tm.clear();
-        if (Utils.parseCondition(this.cr.container.condition, this.player)) {
-            if (!(this.player.location in this.player.containers)) {
-                this.say(this.cr.container.say);
-                const container = this.containers[this.player.location];
-                this.player.containers[this.player.location] = copy(container); // this will need to be fixed
-            } else {
-                this.tm.typing("The chest is already unlocked", this.player);
-                this.tm.wait();
+        if (this.cr.container !== null) {
+            if (Utils.parseCondition(this.cr.container.condition, this.player)) {
+                if (!(this.player.location in this.player.containers)) {
+                    this.say(this.cr.container.say);
+                    const container = this.containers[this.player.location];
+                    this.player.containers[this.player.location] = copy(container); // this will need to be fixed
+                } else {
+                    this.tm.typing("The chest is already unlocked", this.player);
+                    this.tm.wait();
+                }
+                scripts.inventory(this);
             }
-            scripts.inventory(this);
         }
     }
 
@@ -89,28 +95,26 @@ export class Game {
         const stableMenu = new Menu.Menu(menuString, this.tm, [regList], [disList]);
         stableMenu.find();
 
-        let doExit: boolean = true;
-
         this.tm.hideCursor()
         stableMenu.run({
             keyInput: this.tm.getChar,
             writeFunc: (content) => {
-                this.tm.clear();
+                this.tm.clear()
                 console.log(content);
             },
-            onEnter: (value, niceValue) => {
-                this.tm.clear();
-                this.tm.typing(`Traveling to ${this.world[value].name}`, this.player, 0.3);
-                this.player.location = value;
-            },
-            onExit: (value, niceValue) => {
-                doExit = true;
-            }
+            doExit: true
         })
 
-        if (doExit) {
+        let [menuStatus, value, _] = stableMenu.finValue;
+
+        if (menuStatus === Menu.StatusValue.Enter) {
+            this.tm.clear();
+            this.tm.typing(`Traveling to ${this.world[value].name}`, this.player, 0.3);
+            this.player.location = value;
             return;
         }
+
+        return;
     }
 
     seeQuests(): void {
@@ -151,7 +155,8 @@ export class Game {
 
     gameLoop(): void {
         this.tm.clear();
-        this.cr = this.world[this.player.location];
+        this.cr = this.world.getRoom(this.player.location);
+        [this.player.location];
 
         const currentNPCs = Utils.getNPCs(this);
 
@@ -159,14 +164,14 @@ export class Game {
 
         this.savemngr.save();
 
-        if (this.cr.introtext) {
+        if (this.cr.introtext.length > 0) {
             this.say(this.cr.introtext);
         }
 
-        if (this.cr.do) {
+        if (this.cr.do.length > 0) {
             for (const action of this.cr.do) {
-                if (Utils.parseCondition(action[0], this.player)) {
-                    Utils.parseDo(action[1], this.player);
+                if (Utils.parseCondition(action.condition, this.player)) {
+                    Utils.parseDo(action.content, this.player);
                     break;
                 }
             }
@@ -183,16 +188,16 @@ export class Game {
         let outText = "";
         outText += `${this.cr.desc.long}. `;
 
-        if (this.cr.store && Utils.parseCondition(this.cr.store.condition, this.player)) {
+        if (this.cr.store !== null && Utils.parseCondition(this.cr.store.condition, this.player)) {
             outText += `${this.cr.store.desc}. `;
         }
 
-        if (this.cr.stable && !this.player.stables.includes(this.player.location)) {
+        if (this.cr.stable !== null && !this.player.stables.includes(this.player.location)) {
             this.player.stables.push(this.player.location);
             outText += `${this.cr.stable}. `;
         }
 
-        if (this.cr.container) {
+        if (this.cr.container !== null) {
             outText += `${this.cr.container.desc}. `;
         }
 
@@ -282,24 +287,21 @@ export class Game {
                     this.tm.wait();
                 }
             } else {
-                scripts.dialogue(currentNPCs[command[1]], this);
+                DialougeScript.dialogue(currentNPCs[command[1]], this);
             }
         } else if (command[0] === "quests") {
             this.seeQuests();
         } else if (command[0] === "stable") {
             this.doStables();
         } else if (command[0] === "store") {
-            if (this.cr.store && Utils.parseCondition(this.cr.store.condition, this.player)) {
-                const storeDict = {
-                    pricemultiplier: this.cr.store.multiplier,
-                    items: []
-                };
+            if (this.cr.store !== null && Utils.parseCondition(this.cr.store.condition, this.player)) {
+                const storeDict = new StoreScript.ShopStorage(this.cr.store.multiplier, []);
                 for (const i of this.cr.store.items) {
-                    if (Utils.parseCondition(i[0], this.player)) {
-                        storeDict.items.push(i[1]);
+                    if (Utils.parseCondition(i.condition, this.player)) {
+                        storeDict.items.push(this.npcmngr.makeNew(i.content));
                     }
                 }
-                scripts.storemenu(storeDict, this);
+                StoreScript.storeMenu(storeDict, this);
             } else {
                 this.tm.typing("The store seems to be closed", this.player);
                 this.tm.wait();

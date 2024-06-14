@@ -206,7 +206,7 @@ interface RoomDescription {
 }
 
 interface RoomDirection {
-  dest: string;
+  dest: roomId;
   say: ConditionalCheck[];
   condition: string;
   do: string;
@@ -225,7 +225,7 @@ interface RoomStore {
   items: ConditionalCheck[]
 }
 
-interface RoomWorld {
+export interface RoomWorld {
   name: string;
   desc: RoomDescription;
   do: ConditionalCheck[];
@@ -238,10 +238,14 @@ interface RoomWorld {
 }
 
 export class RoomDataWarehouse {
-  private rooms: Map<string, RoomWorld>;
+  private rooms: Map<roomId, RoomWorld>;
 
   constructor() {
 
+  }
+
+  getRoom(roomId: roomId): RoomWorld {
+    return this.rooms[roomId];
   }
 
   loadData(data: any, progress: (c: number, max: number) => void): void {
