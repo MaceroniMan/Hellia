@@ -93,15 +93,19 @@ export function dialogue(npc: any, game: any): void {
             dialogueMenu.run({
                 keyInput: game.tm.getChar,
                 writeFunc: (content) => {
-                    console.log(game.tm.clear + content);
+                    game.tm.clear()
+                    console.log(content);
                 },
-                onEnter: (value, niceValue) => {
-                    talkLocation = value.split("$")[0];
-                },
-                onSelect: (value, niceValue) => {
-                    prev = ["You", niceValue];
-                }
+                doSelect: true
             })
+    
+            let [menuStatus, value, niceValue] = dialogueMenu.finValue;
+
+            if (menuStatus === Menu.StatusValue.Enter) {
+                talkLocation = value.split("$")[0];
+            } else if (menuStatus === Menu.StatusValue.Select) {
+                prev = ["You", niceValue];
+            }
         }
 
         if (talkLocation === "exit") {

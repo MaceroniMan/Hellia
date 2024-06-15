@@ -12,11 +12,11 @@ import * as DialougeScript from 'scripts/dialouge';
 interface GameConstructorParams {
     savemngr: SaveMngr.SaveGameManager;
     terminal: Term.Terminal;
-    items: any;
-    npcmngr: Loader.ItemDataWarehouse;
-    world: any;
-    quests: any;
-    containers: any;
+    items: Loader.ItemDataWarehouse;
+    npcmngr: Loader.NPCDataWarehouse;
+    world: Loader.RoomDataWarehouse;
+    quests: Loader.QuestDataWarehouse;
+    containers: Loader.ContainerDataWarehouse;
 }
 
 export class Game {
@@ -24,10 +24,12 @@ export class Game {
     public player: SaveMngr.Player;
     public tm: Term.Terminal;
     public items: Loader.ItemDataWarehouse;
-    public npcmngr: Loader.ItemDataWarehouse;
+    public npcmngr: Loader.NPCDataWarehouse;
     public world: Loader.RoomDataWarehouse;
-    public quests: any;
-    public containers: any;
+    public quests: Loader.QuestDataWarehouse;
+    public containers: Loader.ContainerDataWarehouse;
+
+    /** A Shortcut for the current room, calculated at the start of each loop */
     public cr: Loader.RoomWorld;
 
     constructor({ savemngr, terminal, items, npcmngr, world, quests, containers }: GameConstructorParams) {
@@ -53,18 +55,16 @@ export class Game {
 
     unlockChest(): void {
         this.tm.clear();
-        if (this.cr.container !== null) {
-            if (Utils.parseCondition(this.cr.container.condition, this.player)) {
-                if (!(this.player.location in this.player.containers)) {
-                    this.say(this.cr.container.say);
-                    const container = this.containers[this.player.location];
-                    this.player.containers[this.player.location] = copy(container); // this will need to be fixed
-                } else {
-                    this.tm.typing("The chest is already unlocked", this.player);
-                    this.tm.wait();
-                }
-                scripts.inventory(this);
+        if (this.cr.container !== null && Utils.parseCondition(this.cr.container.condition, this.player)) {
+            if (!(this.player.location in this.player.containers)) {
+                this.say(this.cr.container.say);
+                const container = this.containers[this.player.location];
+                this.player.containers[this.player.location] = copy(container); // this will need to be fixed
+            } else {
+                this.tm.typing("The chest is already unlocked", this.player);
+                this.tm.wait();
             }
+            scripts.inventory(this);
         }
     }
 
@@ -88,7 +88,7 @@ export class Game {
                 regList.push(stableLocation);
                 disList.push(this.world[stableLocation].name);
             } else {
-                menuString += `Travel to '${this.world[stableLocation].name}' ${this.tm.CGreen}(HERE)\n${this.tm.reset}`;
+                menuString += `Travel to '${this.world[stableLocation].name}' ${this.tm.green()}(HERE)\n${this.tm.reset()}`;
             }
         }
 

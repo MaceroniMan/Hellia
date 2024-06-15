@@ -4,17 +4,32 @@ import { roomId, flagId, questId } from 'interface'
 export class Player {
     private savemanager: SaveGameManager;
 
-    public name: string; // the current player name
-    public stars: number; // their version of money
-    public moves: number; // the total count of the moves
-    public location: string; // the current player location
-    public flags: Map<flagId, number>; // game flags
-    public inventory: InventoryItem[]; // the inventory of all the items the player has on them
-    public quests: Map<questId, number> // a list of all the quests and the progress on them ex. "z1-main": 0
-    public stables: roomId[]; // a list of all the places you can 'teleport' to
-    public world: Map<roomId, InventoryItem[]>; // a way to save what items have been dropped on the ground
-    public containers: Map<roomId, InventoryItem[]>; // a way to save the state of the containers in the world
-    public recipes: string[]; // a list of all the current crafting recipies
+    /** The current player name */
+    public name: string;
+    /** Their version of money */
+    public stars: number;
+    /** The total count of the moves */
+    public moves: number;
+    /** The current player location */
+    public location: roomId;
+    /** The map of all the flags */
+    public flags: Map<flagId, number>;
+    /** The inventory of all the items the player has on them */
+    public inventory: InventoryItem[];
+    /** A list of all the quests and the progrss on them
+     * ```ts
+     * "z1-main": 0
+     * ```
+     */
+    public quests: Map<questId, number>;
+    /** A list of all the places you can 'teleport' to */
+    public stables: roomId[];
+    /** A way to save what items have been dropped on the ground */
+    public world: Map<roomId, InventoryItem[]>;
+    /** A way to save the state of the containers in the world */
+    public containers: Map<roomId, InventoryItem[]>;
+    /** A list of all the current crafting recipies */
+    public recipes: string[];
 
     constructor(savemanager: SaveGameManager) {
         // set default values

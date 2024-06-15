@@ -1,4 +1,4 @@
-import { ConditionalCheck, npcId, roomId, questId, itemId, containerId } from 'interface';
+import { ConditionalCheck, npcId, roomId, questId, itemId } from 'interface';
 
 const base64_world: string = ``;
 const base64_npc: string = ``;
@@ -88,8 +88,16 @@ function b64toBlob(b64Data: string, contentType: string = '', sliceSize: number 
   }
 */
 
+export class QuestDataWarehouse {
+  
+}
+
+export class ContainerDataWarehouse {
+
+}
+
 /** Represents a dialouge option picker
- * ```ts
+ * ```yaml
  * condition: string
  * goto: string
  * text: string
@@ -102,7 +110,7 @@ interface NpcDialougeOption {
 }
 
 /** Represents a single line of dialouge
- * ```ts
+ * ```yaml
  * speaker: string
  * text: string
  * ```
@@ -113,7 +121,7 @@ interface NpcDialougeLine {
 }
 
 /** Represents a entire dialouge interaction
- * ```ts
+ * ```yaml
  * do: string
  * options: NpcDialougeOption[]
  * dialouge: NpcDialougeLine[]

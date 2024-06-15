@@ -6,6 +6,9 @@ class KeyboardManager { // use for getting keyboard input
 
 class HtmlContentManager { // use for putting output to screen
 
+  openColor(color: string): void {}
+
+  closeColor(color: string): void {}
 }
 
 class MetaContentManager { // use for any browser-side notifications
@@ -19,9 +22,12 @@ export class TermKey {
 }
 
 export class Terminal {
-  onWhite = "";
-  normal = "";
-  green = "";
+  private openColors: string[];
+
+  green(text?: string): string {}
+  blue(text?: string): string {}
+  red(text?: string): string {}
+  reset(): string {}
 
   wait(): void {}
   clear(): void {}

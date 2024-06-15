@@ -1,9 +1,7 @@
-import { InventoryItem } from 'module/loader';
-
 // The place for public interfaces or types
 
 /** Contains the check string and the content related
- * ```ts
+ * ```yaml
  * condition: string
  * content: string
  * ```
