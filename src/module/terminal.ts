@@ -1,19 +1,5 @@
 import * as SaveMngr from 'module/savegame';
-
-class KeyboardManager { // use for getting keyboard input
-
-}
-
-class HtmlContentManager { // use for putting output to screen
-
-  openColor(color: string): void {}
-
-  closeColor(color: string): void {}
-}
-
-class MetaContentManager { // use for any browser-side notifications
-
-}
+import * as HtmlMngr from 'module/html'
 
 export class TermKey {
   public value: string;

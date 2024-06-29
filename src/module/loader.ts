@@ -197,7 +197,7 @@ interface ItemProperties {
 }
 
 export class ItemDataWarehouse {
-  private items 
+  private items;
 
   makeNew(itemId: string): InventoryItem {
 
